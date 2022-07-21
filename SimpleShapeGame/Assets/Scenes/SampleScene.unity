@@ -1038,6 +1038,14 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 3058192875203380632, guid: 1dd88d3b718c3ac49943ff9391b37e6d, type: 3}
+      propertyPath: bullet
+      value: 
+      objectReference: {fileID: 1894618330518416783, guid: 6597ba0b98cd503438d814f2ed77126e, type: 3}
+    - target: {fileID: 3058192875203380632, guid: 1dd88d3b718c3ac49943ff9391b37e6d, type: 3}
+      propertyPath: shootDelay
+      value: 0.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 3058192875203380632, guid: 1dd88d3b718c3ac49943ff9391b37e6d, type: 3}
       propertyPath: bulletCollector
       value: 
       objectReference: {fileID: 1366471581}
