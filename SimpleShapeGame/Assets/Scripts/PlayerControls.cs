@@ -6,21 +6,29 @@ using Cinemachine;
 
 public class PlayerControls : MonoBehaviour
 {
+    private GameObject bulletCollector;
     private PlayerInputActions playerInputActions;
     private Rigidbody2D rb;
     public float moveForce;
     public float moveSpeed;
     private Vector2 lastMousePos;
-    public GameObject shot;
+    public GameObject bullet;
+    private bool holdingShootButton;
+    private float shootTimer;
+    public float shootDelay;
 
     // Start is called before the first frame update
     void Awake()
     {
+        holdingShootButton = false;
+        bulletCollector = GameObject.Find("BulletCollector");
         rb = GetComponent<Rigidbody2D>();
         playerInputActions = new PlayerInputActions();
         playerInputActions.Player.Enable();
         lastMousePos = Vector2.zero;
-        playerInputActions.Player.Shoot.performed += Shoot;
+        playerInputActions.Player.Shoot.performed += StartShooting;
+        playerInputActions.Player.Shoot.canceled += StopShooting;
+        shootTimer = 0;
     }
 
     // Update is called once per frame
@@ -28,17 +36,19 @@ public class PlayerControls : MonoBehaviour
     {
         Move();
         Aim();
+        Shooting();
     }
 
     void Aim()
     {
         // detecting mouse
         Vector2 mousePos;
-        if (Camera.current != null)
-            mousePos = Camera.current.ScreenToWorldPoint(Mouse.current.position.ReadValue());
+        if (Camera.main != null)
+            mousePos = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
         else
-            mousePos = lastMousePos;
-        lastMousePos.x = mousePos.x;
+            mousePos = lastMousePos; // when mouse position is not found, set it to what it was last frame
+
+        lastMousePos = mousePos;
 
         // setting angle of player
         Vector2 distance = mousePos - (Vector2)transform.position; // get position vector from player to mouse
@@ -46,6 +56,7 @@ public class PlayerControls : MonoBehaviour
         Quaternion rotation = transform.rotation; // create new rotation quaternion
         rotation.eulerAngles = new Vector3(transform.rotation.x, transform.rotation.y, angle); // set rotation's euler angles
         transform.rotation = rotation; // put it back into transform
+
     }
 
     void Move()
@@ -61,8 +72,31 @@ public class PlayerControls : MonoBehaviour
         }
     }
 
-    void Shoot(InputAction.CallbackContext phase)
+    void Shooting()
     {
-        GameObject.Instantiate(shot, transform.parent);
+        if (shootTimer == 0)
+        {
+            if (holdingShootButton)
+            {
+                GameObject.Instantiate(bullet, bulletCollector.transform);
+                shootTimer = shootDelay;
+            }
+        }
+        else
+        {
+            shootTimer -= Time.deltaTime;
+            if (shootTimer < 0)
+                shootTimer = 0;
+        }
+    }
+
+    void StartShooting(InputAction.CallbackContext phase)
+    {
+        holdingShootButton = true;
+    }
+
+    void StopShooting(InputAction.CallbackContext phase)
+    {
+        holdingShootButton = false;
     }
 }
