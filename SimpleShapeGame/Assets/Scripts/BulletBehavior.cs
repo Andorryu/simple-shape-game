@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class BulletBehavior : MonoBehaviour
 {
-    private GameObject player;
+    public string targetTransformName;
+    private GameObject targetTransform;
     private Rigidbody2D rb;
     private float direction;
     public float speed;
@@ -13,20 +14,20 @@ public class BulletBehavior : MonoBehaviour
     void Start()
     {
         // find player
-        if (GameObject.Find("Player") != null)
-            player = GameObject.Find("Player");
+        if (GameObject.Find(targetTransformName) != null)
+            targetTransform = GameObject.Find(targetTransformName);
         else
-            Debug.LogError("Could not find a gameobject named 'Player'.");
+            Debug.LogError("Could not find a gameobject named " + targetTransformName + ".");
 
         // reference rigidbody component
         rb = GetComponent<Rigidbody2D>();
 
         // set direction float to player's direction
-        direction = player.transform.rotation.eulerAngles.z;
+        direction = targetTransform.transform.rotation.eulerAngles.z;
 
         // bullet appears on the player and points in same direction
-        transform.position = player.transform.position;
-        transform.rotation = player.transform.rotation;
+        transform.position = targetTransform.transform.position;
+        transform.rotation = targetTransform.transform.rotation;
 
         Vector2 directionVector = new Vector2(Mathf.Cos(direction * Mathf.PI / 180), Mathf.Sin(direction * Mathf.PI / 180));
 

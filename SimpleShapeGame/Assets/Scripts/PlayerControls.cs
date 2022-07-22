@@ -78,7 +78,7 @@ public class PlayerControls : MonoBehaviour
         {
             if (holdingShootButton)
             {
-                GameObject.Instantiate(bullet, bulletCollector.transform);
+                Instantiate(bullet, bulletCollector.transform);
                 shootTimer = shootDelay;
             }
         }
