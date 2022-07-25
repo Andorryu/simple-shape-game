@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &2093314032684705393
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8503236481715003702}
+  m_Layer: 0
+  m_Name: Gun
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8503236481715003702
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2093314032684705393}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.707542, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3058192875203380633}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3058192875179969563
 GameObject:
   m_ObjectHideFlags: 0
@@ -11,7 +42,7 @@ GameObject:
   - component: {fileID: 3058192875179969562}
   - component: {fileID: 3058192875179969561}
   m_Layer: 0
-  m_Name: front
+  m_Name: Front
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -74,7 +105,7 @@ SpriteRenderer:
   m_SortingLayer: 1
   m_SortingOrder: 1
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
-  m_Color: {r: 0.022321086, g: 0.1804596, b: 0.5377358, a: 1}
+  m_Color: {r: 0.023529412, g: 0.18039216, b: 0.5372549, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -96,9 +127,11 @@ GameObject:
   - component: {fileID: 3058192875203380632}
   - component: {fileID: 3058192875203380638}
   - component: {fileID: 3114961607764177374}
+  - component: {fileID: 68453468205975079}
+  - component: {fileID: 3410533257445734215}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -110,13 +143,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3058192875203380635}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1.5, y: 1.5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3058192876909742309}
   - {fileID: 3058192875179969562}
+  - {fileID: 8503236481715003702}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -132,10 +166,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3c3597c9cfe61f345b8912da0b7a3592, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  bullet: {fileID: 1894618330518416783, guid: 6597ba0b98cd503438d814f2ed77126e, type: 3}
+  gun: {fileID: 2093314032684705393}
   moveForce: 50
   moveSpeed: 12
-  bullet: {fileID: 0}
-  shootDelay: 0
+  shootDelay: 0.25
 --- !u!50 &3058192875203380638
 Rigidbody2D:
   serializedVersion: 4
@@ -156,7 +191,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!60 &3114961607764177374
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -186,6 +221,40 @@ PolygonCollider2D:
       - {x: -0.707, y: 0}
       - {x: 0, y: -0.707}
       - {x: 0.707, y: 0}
+--- !u!114 &68453468205975079
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3058192875203380635}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e3202a444f7e9954784acdb627b363b9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  health: 3
+  makeInvincibleOnHit: 1
+  invincibilityDuration: 0.25
+  invincible: 0
+--- !u!114 &3410533257445734215
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3058192875203380635}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 479a3480de5eaf1469d5bd6d7e18261d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _base: {fileID: 3058192876909742310}
+  _front: {fileID: 3058192875179969563}
+  _defaultBaseColor: {r: 0.019607844, g: 0.078431375, b: 0.41568628, a: 1}
+  _invincibleBaseColor: {r: 0.27058825, g: 0.078431375, b: 0.28627452, a: 1}
+  _defaultFrontColor: {r: 0.023529412, g: 0.18039216, b: 0.5372549, a: 1}
+  _invincibleFrontColor: {r: 0.3372549, g: 0.18039216, b: 0.33333334, a: 1}
 --- !u!1 &3058192876909742310
 GameObject:
   m_ObjectHideFlags: 0
@@ -197,7 +266,7 @@ GameObject:
   - component: {fileID: 3058192876909742309}
   - component: {fileID: 3058192876909742308}
   m_Layer: 0
-  m_Name: base
+  m_Name: Base
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -260,7 +329,7 @@ SpriteRenderer:
   m_SortingLayer: 1
   m_SortingOrder: 0
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
-  m_Color: {r: 0.02114628, g: 0.078004904, b: 0.41509432, a: 1}
+  m_Color: {r: 0.019607844, g: 0.078431375, b: 0.41568628, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0

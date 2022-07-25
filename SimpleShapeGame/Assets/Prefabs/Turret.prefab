@@ -95,7 +95,7 @@ GameObject:
   - component: {fileID: 9082462029368437468}
   - component: {fileID: 1443119774602529988}
   m_Layer: 0
-  m_Name: Aim Square
+  m_Name: Front
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -180,9 +180,11 @@ GameObject:
   - component: {fileID: -394125661978720943}
   - component: {fileID: -1531568572776572754}
   - component: {fileID: 3786027244508498731}
+  - component: {fileID: 443723064}
+  - component: {fileID: 477668729316465384}
   m_Layer: 0
-  m_Name: Enemy
-  m_TagString: Untagged
+  m_Name: Turret
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -215,7 +217,7 @@ CircleCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
@@ -241,7 +243,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 3
 --- !u!114 &3786027244508498731
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -254,6 +256,40 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0932cb383465a644e8afb0b3d089c873, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  bullet: {fileID: 1894618330518416783, guid: 426f22a5bcbdd5144b327fcd055a7d76, type: 3}
+  rotationRange: 20
+  rotatePower: 100
+  rotateSpeed: 100
+  shootDelay: 0.8
+--- !u!114 &443723064
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6731122210774772398}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e3202a444f7e9954784acdb627b363b9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  health: 0
+  makeInvincibleOnHit: 0
+  invincibilityDuration: 0
+  invincible: 0
+--- !u!114 &477668729316465384
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6731122210774772398}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d74812b2f63516b4c82d866f9b8ae4d6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damage: 1
 --- !u!1 &6731122211366394408
 GameObject:
   m_ObjectHideFlags: 0

@@ -6,13 +6,14 @@ using Cinemachine;
 
 public class PlayerControls : MonoBehaviour
 {
+    public GameObject bullet;
+    public GameObject gun;
     private GameObject bulletCollector;
     private PlayerInputActions playerInputActions;
     private Rigidbody2D rb;
     public float moveForce;
     public float moveSpeed;
     private Vector2 lastMousePos;
-    public GameObject bullet;
     private bool holdingShootButton;
     private float shootTimer;
     public float shootDelay;
@@ -78,15 +79,16 @@ public class PlayerControls : MonoBehaviour
         {
             if (holdingShootButton)
             {
-                Instantiate(bullet, bulletCollector.transform);
+                GameObject bulletClone = Instantiate(bullet, gun.transform.position, transform.rotation, bulletCollector.transform); // create bullet clone
+                bulletClone.GetComponent<BulletBehavior>().shooter = gameObject; // set the shooter object in bulletClone's bulletBehavior to this one
+
                 shootTimer = shootDelay;
             }
         }
         else
         {
             shootTimer -= Time.deltaTime;
-            if (shootTimer < 0)
-                shootTimer = 0;
+            if (shootTimer < 0) shootTimer = 0;
         }
     }
 

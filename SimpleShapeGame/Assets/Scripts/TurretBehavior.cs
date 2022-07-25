@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Enemy1AI : MonoBehaviour
+public class TurretBehavior : MonoBehaviour
 {
     private GameObject player;
     public GameObject bullet;
@@ -31,12 +31,14 @@ public class Enemy1AI : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        ApplyRotationDirection();
-        ApplyPower();
+        DetermineRotationDirection();
+        ApplyTorque();
         shootTimer -= Time.deltaTime;
         if (shootTimer < 0)
         {
-            Instantiate(bullet, bulletCollector.transform);
+            GameObject bulletClone = Instantiate(bullet, transform.position, transform.rotation, bulletCollector.transform);
+            bulletClone.GetComponent<BulletBehavior>().shooter = gameObject;
+
             shootTimer = shootDelay;
         }
     }
@@ -52,7 +54,7 @@ public class Enemy1AI : MonoBehaviour
         transform.rotation = rotation;
     }
 
-    void ApplyRotationDirection()
+    void DetermineRotationDirection()
     {
         // find vector2 from enemy to player
         Vector2 distance = player.transform.position - transform.position;
@@ -84,13 +86,9 @@ public class Enemy1AI : MonoBehaviour
         {
             rotateDirection = 1;
         }
-
-        
-        Debug.Log("playerAngle: " + playerAngle);
-        Debug.Log("rotation: " + rotation);
     }
 
-    void ApplyPower()
+    void ApplyTorque()
     {
         // if rotation is in range
         rb.AddTorque(rotatePower * rotateDirection);
