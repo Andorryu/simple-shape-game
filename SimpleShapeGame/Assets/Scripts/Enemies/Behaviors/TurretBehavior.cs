@@ -2,45 +2,36 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TurretBehavior : MonoBehaviour
+public class TurretBehavior : ShooterBehavior
 {
     private GameObject player;
-    public GameObject bullet;
-    private GameObject bulletCollector;
-    private Rigidbody2D rb;
-    public float rotationRange; // rotates to look at player with this much variability
-    public float rotatePower;
+    private int rotateDirection;
     public float rotateSpeed;
-    private int rotateDirection; // used when enemy is in rotation range
-
-    public float shootDelay;
-    private float shootTimer;
+    public float rotationRange;
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         // initialize variables
         rb = GetComponent<Rigidbody2D>();
-        rotateDirection = 1;
         player = GameObject.Find("Player");
-        bulletCollector = GameObject.Find("BulletCollector");
+        bulletHolder = GameObject.FindGameObjectWithTag("BulletHolder");
+
+        // other init stuff
+        rotateDirection = 1;
         shootTimer = shootDelay;
         InitializeTransform();
+        InitializeExistTimer();
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
         DetermineRotationDirection();
-        ApplyTorque();
-        shootTimer -= Time.deltaTime;
-        if (shootTimer < 0)
-        {
-            GameObject bulletClone = Instantiate(bullet, transform.position, transform.rotation, bulletCollector.transform);
-            bulletClone.GetComponent<BulletBehavior>().shooter = gameObject;
+        ApplyRotationSpeed();
 
-            shootTimer = shootDelay;
-        }
+        UpdateShootTimer();
+        UpdateExistTimer();
     }
 
     void InitializeTransform()
@@ -88,20 +79,10 @@ public class TurretBehavior : MonoBehaviour
         }
     }
 
-    void ApplyTorque()
+    void ApplyRotationSpeed()
     {
         // if rotation is in range
-        rb.AddTorque(rotatePower * rotateDirection);
-
-        // set a maximum rotate speed
-        if (rb.angularVelocity > rotateSpeed)
-        {
-            rb.angularVelocity = rotateSpeed;
-        }
-        else if (rb.angularVelocity < -rotateSpeed)
-        {
-            rb.angularVelocity = -rotateSpeed;
-        }
+        rb.angularVelocity = rotateSpeed * rotateDirection;
     }
 
     float Mod(float input, float modulus)

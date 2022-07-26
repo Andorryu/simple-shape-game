@@ -5,8 +5,11 @@ TagManager:
   serializedVersion: 2
   tags:
   - Wall
-  - Projectile
-  - Enemy
+  - Hazard
+  - Attack
+  - BulletHolder
+  - LevelController
+  - EnemyHolder
   layers:
   - Default
   - TransparentFX

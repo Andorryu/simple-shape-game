@@ -2,12 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using Cinemachine;
 
-public class PlayerControls : MonoBehaviour
+public class PlayerController : MonoBehaviour
 {
     public GameObject bullet;
     public GameObject gun;
+    public float health;
     private GameObject bulletCollector;
     private PlayerInputActions playerInputActions;
     private Rigidbody2D rb;
@@ -15,14 +15,20 @@ public class PlayerControls : MonoBehaviour
     public float moveSpeed;
     private Vector2 lastMousePos;
     private bool holdingShootButton;
-    private float shootTimer;
     public float shootDelay;
+    private float shootTimer;
+    public float invincibilityDuration;
+    private float invincibilityTimer;
+    private bool invincible;
+
+    public delegate void OnDamaged();
+    public event OnDamaged AppearDamaged;
 
     // Start is called before the first frame update
     void Awake()
     {
         holdingShootButton = false;
-        bulletCollector = GameObject.Find("BulletCollector");
+        bulletCollector = GameObject.FindGameObjectWithTag("BulletHolder");
         rb = GetComponent<Rigidbody2D>();
         playerInputActions = new PlayerInputActions();
         playerInputActions.Player.Enable();
@@ -30,6 +36,8 @@ public class PlayerControls : MonoBehaviour
         playerInputActions.Player.Shoot.performed += StartShooting;
         playerInputActions.Player.Shoot.canceled += StopShooting;
         shootTimer = 0;
+        invincibilityTimer = invincibilityDuration;
+        invincible = false;
     }
 
     // Update is called once per frame
@@ -38,6 +46,58 @@ public class PlayerControls : MonoBehaviour
         Move();
         Aim();
         Shooting();
+
+        if (invincible)
+        {
+            invincibilityTimer -= Time.deltaTime;
+            if (invincibilityTimer <= 0)
+            {
+                StopInvincibility();
+            }
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Attack"))
+        {
+            AttackBehavior attackBehavior = collision.GetComponent<AttackBehavior>();
+            if (attackBehavior.senderID == "Hazard")
+            {
+                if (!invincible)
+                {
+                    health -= attackBehavior.damage;
+                    AppearDamaged();
+                    StartInvincibility();
+                }
+            }
+        }
+    }
+
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Hazard"))
+        {
+            if (!invincible)
+            {
+                health -= collision.GetComponent<DamagerBehavior>().damage;
+                AppearDamaged();
+                StartInvincibility();
+            }
+        }
+    }
+
+    void Move()
+    {
+        // Move
+        Vector2 inputVector = playerInputActions.Player.Move.ReadValue<Vector2>();
+
+        rb.AddForce(inputVector * moveForce);
+
+        if (rb.velocity.magnitude > moveSpeed)
+        {
+            rb.velocity = rb.velocity.normalized * moveSpeed;
+        }
     }
 
     void Aim()
@@ -60,19 +120,6 @@ public class PlayerControls : MonoBehaviour
 
     }
 
-    void Move()
-    {
-        // Move
-        Vector2 inputVector = playerInputActions.Player.Move.ReadValue<Vector2>();
-
-        rb.AddForce(inputVector * moveForce);
-
-        if (rb.velocity.magnitude > moveSpeed)
-        {
-            rb.velocity = rb.velocity.normalized * moveSpeed;
-        }
-    }
-
     void Shooting()
     {
         if (shootTimer == 0)
@@ -80,7 +127,8 @@ public class PlayerControls : MonoBehaviour
             if (holdingShootButton)
             {
                 GameObject bulletClone = Instantiate(bullet, gun.transform.position, transform.rotation, bulletCollector.transform); // create bullet clone
-                bulletClone.GetComponent<BulletBehavior>().shooter = gameObject; // set the shooter object in bulletClone's bulletBehavior to this one
+                bulletClone.GetComponent<BulletBehavior>().sender = gameObject;
+                bulletClone.GetComponent<BulletBehavior>().senderID = gameObject.tag;
 
                 shootTimer = shootDelay;
             }
@@ -100,5 +148,16 @@ public class PlayerControls : MonoBehaviour
     void StopShooting(InputAction.CallbackContext phase)
     {
         holdingShootButton = false;
+    }
+
+    void StartInvincibility()
+    {
+        invincible = true;
+    }
+
+    void StopInvincibility()
+    {
+        invincibilityTimer = invincibilityDuration;
+        invincible = false;
     }
 }
