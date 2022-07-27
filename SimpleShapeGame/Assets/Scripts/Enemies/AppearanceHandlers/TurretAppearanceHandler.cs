@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class TurretAppearanceHandler : MonoBehaviour
 {
-    private TurretBehavior turretBehavior;
+    private TankGunnerBehavior turretBehavior;
     public float damagedTime;
     private float damagedTimer;
     private bool damaged;
@@ -15,7 +15,7 @@ public class TurretAppearanceHandler : MonoBehaviour
     // Start is called before the first frame update
     void Awake()
     {
-        turretBehavior = GetComponent<TurretBehavior>();
+        turretBehavior = GetComponent<TankGunnerBehavior>();
         damagedTimer = damagedTime;
         damaged = false;
     }

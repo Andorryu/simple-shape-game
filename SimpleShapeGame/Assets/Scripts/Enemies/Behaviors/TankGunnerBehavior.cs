@@ -2,10 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TurretBehavior : ShooterBehavior
+public class TankGunnerBehavior : ShooterBehavior
 {
     private GameObject player;
-    private int rotateDirection;
+    public GameObject rotatingObject;
     public float rotateSpeed;
     public float rotationRange;
 
@@ -13,12 +13,11 @@ public class TurretBehavior : ShooterBehavior
     void Awake()
     {
         // initialize variables
-        rb = GetComponent<Rigidbody2D>();
-        player = GameObject.Find("Player");
+        rb = rotatingObject.GetComponent<Rigidbody2D>();
+        player = GameObject.FindWithTag("Player");
         bulletHolder = GameObject.FindGameObjectWithTag("BulletHolder");
 
         // other init stuff
-        rotateDirection = 1;
         shootTimer = shootDelay;
         InitializeTransform();
         InitializeExistTimer();
@@ -28,7 +27,6 @@ public class TurretBehavior : ShooterBehavior
     void FixedUpdate()
     {
         DetermineRotationDirection();
-        ApplyRotationSpeed();
 
         UpdateShootTimer();
         UpdateExistTimer();
@@ -52,7 +50,7 @@ public class TurretBehavior : ShooterBehavior
         float playerAngle = Mod(Mathf.Atan2(distance.y, distance.x) * 180 / Mathf.PI, 360); // find float angle from distance vector
 
         // find rotation and upper and lower bounds
-        float rotation = Mod(transform.rotation.eulerAngles.z, 360);
+        float rotation = Mod(rotatingObject.transform.rotation.eulerAngles.z, 360);
         float upperBound = Mod(playerAngle + rotationRange, 360);
         float lowerBound = Mod(playerAngle - rotationRange, 360);
 
@@ -68,21 +66,25 @@ public class TurretBehavior : ShooterBehavior
             if (rotation > 180) rotation -= 360;
         }
 
-        // if rotation is out of range, change direction
-        if (rotation > upperBound)
-        {
-            rotateDirection = -1;
-        }
-        else if (rotation < lowerBound)
-        {
-            rotateDirection = 1;
-        }
-    }
+        Debug.Log("Rotation: " + rotation + "   Upper bound: " + upperBound + "   Lower bound: " + lowerBound);
 
-    void ApplyRotationSpeed()
-    {
-        // if rotation is in range
-        rb.angularVelocity = rotateSpeed * rotateDirection;
+        // if rotation is out of range, change direction
+        if (!(rotation < upperBound && rotation > lowerBound))
+        {
+            float upperDistance, lowerDistance;
+
+            upperDistance = Mathf.Min(Mathf.Abs(rotation - upperBound), Mathf.Abs(rotation - upperBound - 360));
+            lowerDistance = Mathf.Min(Mathf.Abs(rotation - lowerBound), Mathf.Abs(rotation - lowerBound - 360));
+
+            if (upperDistance < lowerDistance)
+            {
+                rb.angularVelocity = -rotateSpeed;
+            }
+            else
+            {
+                rb.angularVelocity = rotateSpeed;
+            }
+        }
     }
 
     float Mod(float input, float modulus)
