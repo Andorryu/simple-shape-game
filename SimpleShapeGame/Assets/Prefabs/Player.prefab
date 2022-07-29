@@ -211,7 +211,7 @@ GameObject:
   - component: {fileID: 3058192875203380638}
   - component: {fileID: 3114961607764177374}
   - component: {fileID: 3058192875203380632}
-  - component: {fileID: 3410533257445734215}
+  - component: {fileID: 5095492860601516044}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -308,7 +308,7 @@ MonoBehaviour:
   moveSpeed: 12
   shootDelay: 0.25
   invincibilityDuration: 1
---- !u!114 &3410533257445734215
+--- !u!114 &5095492860601516044
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -317,11 +317,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 3058192875203380635}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 479a3480de5eaf1469d5bd6d7e18261d, type: 3}
+  m_Script: {fileID: 11500000, guid: 2550a266cb39ee145824062de2afa74c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damagedBase: {fileID: 5451955217232561886}
-  damagedFront: {fileID: 119133963927099640}
+  damagedParts:
+  - {fileID: 5451955217232561886}
+  - {fileID: 119133963927099640}
   damagedTime: 0.25
 --- !u!1 &3058192876909742310
 GameObject:

@@ -263,8 +263,8 @@ GameObject:
   - component: {fileID: 6731122210774772393}
   - component: {fileID: -394125661978720943}
   - component: {fileID: -1531568572776572754}
-  - component: {fileID: 3786027244508498731}
-  - component: {fileID: 32657702577981424}
+  - component: {fileID: 7565441012227502380}
+  - component: {fileID: 5875528071883483615}
   m_Layer: 0
   m_Name: Turret
   m_TagString: Hazard
@@ -330,7 +330,7 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 3
---- !u!114 &3786027244508498731
+--- !u!114 &7565441012227502380
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -339,18 +339,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 6731122210774772398}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0932cb383465a644e8afb0b3d089c873, type: 3}
+  m_Script: {fileID: 11500000, guid: 3b8a2ac52139b064ea472776a63d1413, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   damage: 1
   existTime: 15
-  existTimer: 0
   health: 5
   shootDelay: 1.2
   bullet: {fileID: 1894618330518416783, guid: 426f22a5bcbdd5144b327fcd055a7d76, type: 3}
-  rotateSpeed: 300
-  rotationRange: 10
---- !u!114 &32657702577981424
+  bulletInstantiationPoint: {fileID: 6731122210774772398}
+  rotatingObject: {fileID: 6731122210774772398}
+  rotateSpeed: 100
+  rotationRange: 20
+--- !u!114 &5875528071883483615
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -359,13 +360,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 6731122210774772398}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fcffd05514c2bb04f8b0da9637c1634d, type: 3}
+  m_Script: {fileID: 11500000, guid: 6f3ab41ebbb112542b8709da47094456, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  damagedParts:
+  - {fileID: 6574171508918961875}
+  - {fileID: 7317080894775387291}
+  - {fileID: 8999806775822129694}
   damagedTime: 0.25
-  damagedBackground: {fileID: 6574171508918961875}
-  damagedCenter: {fileID: 7317080894775387291}
-  damagedFront: {fileID: 8999806775822129694}
 --- !u!1 &6731122211366394408
 GameObject:
   m_ObjectHideFlags: 0

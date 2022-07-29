@@ -14,7 +14,7 @@ public class DamagerBehavior : MonoBehaviour
     public float damage;
     protected Rigidbody2D rb;
     public float existTime;
-    public float existTimer;
+    protected float existTimer;
 
     protected void InitializeExistTimer()
     {

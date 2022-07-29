@@ -8,6 +8,7 @@ public class ShooterBehavior : EnemyBehavior
     public float shootDelay;
     protected float shootTimer;
     public GameObject bullet;
+    public GameObject bulletInstantiationPoint;
 
     protected void UpdateShootTimer()
     {
@@ -15,7 +16,7 @@ public class ShooterBehavior : EnemyBehavior
         shootTimer -= Time.deltaTime;
         if (shootTimer < 0)
         {
-            GameObject bulletClone = Instantiate(bullet, transform.position, transform.rotation, bulletHolder.transform);
+            GameObject bulletClone = Instantiate(bullet, bulletInstantiationPoint.transform.position, bulletInstantiationPoint.transform.rotation, bulletHolder.transform);
             bulletClone.GetComponent<BulletBehavior>().sender = gameObject;
             bulletClone.GetComponent<BulletBehavior>().senderID = gameObject.tag;
 
