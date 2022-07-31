@@ -4,18 +4,19 @@ using UnityEngine;
 
 public class TurretBehavior : ShooterBehavior
 {
-    private GameObject player;
+    protected GameObject player;
     public GameObject rotatingObject;
     public float rotateSpeed;
     public float rotationRange;
 
     // Start is called before the first frame update
-    void Awake()
+    protected virtual void Awake()
     {
         // initialize variables
         rb = rotatingObject.GetComponent<Rigidbody2D>();
         player = GameObject.FindWithTag("Player");
         bulletHolder = GameObject.FindGameObjectWithTag("BulletHolder");
+        rb.angularVelocity = rotateSpeed;
 
         // other init stuff
         shootTimer = shootDelay;
@@ -24,7 +25,7 @@ public class TurretBehavior : ShooterBehavior
     }
 
     // Update is called once per frame
-    void FixedUpdate()
+    protected virtual void FixedUpdate()
     {
         DetermineRotationDirection();
 
@@ -82,6 +83,7 @@ public class TurretBehavior : ShooterBehavior
             {
                 rb.angularVelocity = rotateSpeed;
             }
+
         }
     }
     float Mod(float input, float modulus)

@@ -60,5 +60,4 @@ public class EnemyAppearanceHandler : MonoBehaviour
             damagedPart.SetActive(false);
         }
     }
-
 }
