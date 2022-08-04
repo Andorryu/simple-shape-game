@@ -16,12 +16,12 @@ public class DamagerBehavior : MonoBehaviour
     public float existTime;
     protected float existTimer;
 
-    protected void InitializeExistTimer()
+    protected virtual void Awake()
     {
         existTimer = existTime;
     }
 
-    protected void UpdateExistTimer() // called in every final child's Update or FixedUpdate function
+    protected virtual void FixedUpdate()
     {
         // exist timer
         existTimer -= Time.deltaTime;

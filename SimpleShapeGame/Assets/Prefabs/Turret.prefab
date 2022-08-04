@@ -343,14 +343,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damage: 1
-  existTime: 15
+  existTime: 500
   health: 5
   shootDelay: 1.2
   bullet: {fileID: 1894618330518416783, guid: 426f22a5bcbdd5144b327fcd055a7d76, type: 3}
   bulletInstantiationPoint: {fileID: 6731122210774772398}
   rotatingObject: {fileID: 6731122210774772398}
   rotateSpeed: 100
-  rotationRange: 20
+  rotationRange: 10
 --- !u!114 &5875528071883483615
 MonoBehaviour:
   m_ObjectHideFlags: 0

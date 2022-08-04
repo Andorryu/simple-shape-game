@@ -10,8 +10,9 @@ public class TurretBehavior : ShooterBehavior
     public float rotationRange;
 
     // Start is called before the first frame update
-    protected virtual void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         // initialize variables
         rb = rotatingObject.GetComponent<Rigidbody2D>();
         player = GameObject.FindWithTag("Player");
@@ -21,16 +22,13 @@ public class TurretBehavior : ShooterBehavior
         // other init stuff
         shootTimer = shootDelay;
         InitializeTransform();
-        InitializeExistTimer();
     }
 
     // Update is called once per frame
-    protected virtual void FixedUpdate()
+    protected override void FixedUpdate()
     {
+        base.FixedUpdate();
         DetermineRotationDirection();
-
-        UpdateShootTimer();
-        UpdateExistTimer();
     }
     void InitializeTransform()
     {
@@ -38,9 +36,9 @@ public class TurretBehavior : ShooterBehavior
         Vector2 distance = player.transform.position - transform.position;
         float targetAngle = Mathf.Atan2(distance.y, distance.x) * 180 / Mathf.PI;
 
-        Quaternion rotation = transform.rotation;
+        Quaternion rotation = rb.transform.rotation;
         rotation.eulerAngles = new Vector3(0, 0, Random.Range(targetAngle - rotationRange, targetAngle + rotationRange));
-        transform.rotation = rotation;
+        rb.transform.rotation = rotation;
     }
     void DetermineRotationDirection()
     {

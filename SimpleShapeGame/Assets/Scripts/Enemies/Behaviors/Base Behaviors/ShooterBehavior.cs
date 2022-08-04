@@ -10,8 +10,9 @@ public class ShooterBehavior : EnemyBehavior
     public GameObject bullet;
     public GameObject bulletInstantiationPoint;
 
-    protected void UpdateShootTimer()
+    protected override void FixedUpdate()
     {
+        base.FixedUpdate();
         // shoot timer
         shootTimer -= Time.deltaTime;
         if (shootTimer < 0)
