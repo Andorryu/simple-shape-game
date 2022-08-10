@@ -7,7 +7,6 @@ public class TurretBehavior : ShooterBehavior
     protected GameObject player;
     public GameObject rotatingObject;
     public float rotateSpeed;
-    public float rotationRange;
 
     // Start is called before the first frame update
     protected override void Awake()
@@ -17,7 +16,6 @@ public class TurretBehavior : ShooterBehavior
         rb = rotatingObject.GetComponent<Rigidbody2D>();
         player = GameObject.FindWithTag("Player");
         bulletHolder = GameObject.FindGameObjectWithTag("BulletHolder");
-        rb.angularVelocity = rotateSpeed;
 
         // other init stuff
         shootTimer = shootDelay;
@@ -28,7 +26,7 @@ public class TurretBehavior : ShooterBehavior
     protected override void FixedUpdate()
     {
         base.FixedUpdate();
-        DetermineRotationDirection();
+        RotateToTarget();
     }
     void InitializeTransform()
     {
@@ -37,58 +35,14 @@ public class TurretBehavior : ShooterBehavior
         float targetAngle = Mathf.Atan2(distance.y, distance.x) * 180 / Mathf.PI;
 
         Quaternion rotation = rb.transform.rotation;
-        rotation.eulerAngles = new Vector3(0, 0, Random.Range(targetAngle - rotationRange, targetAngle + rotationRange));
         rb.transform.rotation = rotation;
     }
-    void DetermineRotationDirection()
+    void RotateToTarget()
     {
-        // find vector2 from enemy to player
-        Vector2 distance = player.transform.position - transform.position;
-        float playerAngle = Mod(Mathf.Atan2(distance.y, distance.x) * 180 / Mathf.PI, 360); // find float angle from distance vector
+        Vector3 distance = player.transform.position - transform.position;
+        Quaternion rotation = Quaternion.LookRotation(Vector3.forward, distance);
+        rotation = Quaternion.Euler(0, 0, rotation.eulerAngles.z + 90);
 
-        // find rotation and upper and lower bounds
-        float rotation = Mod(rotatingObject.transform.rotation.eulerAngles.z, 360);
-        float upperBound = Mod(playerAngle + rotationRange, 360);
-        float lowerBound = Mod(playerAngle - rotationRange, 360);
-
-        // fix edge case (when upperbound or lowerbound wraps around the origin)
-        if (upperBound < playerAngle)
-        {
-            upperBound += 360;
-            if (rotation < 180) rotation += 360;
-        }
-        if (lowerBound > playerAngle)
-        {
-            lowerBound -= 360;
-            if (rotation > 180) rotation -= 360;
-        }
-
-        Debug.Log("Rotation: " + rotation + "   Upper bound: " + upperBound + "   Lower bound: " + lowerBound);
-
-        // if rotation is out of range, change direction
-        if (!(rotation < upperBound && rotation > lowerBound))
-        {
-            float upperDistance, lowerDistance;
-
-            upperDistance = Mathf.Min(Mathf.Abs(rotation - upperBound), Mathf.Abs(rotation - upperBound + 360));
-            lowerDistance = Mathf.Min(Mathf.Abs(rotation - lowerBound), Mathf.Abs(rotation - lowerBound - 360));
-
-            if (upperDistance < lowerDistance)
-            {
-                rb.angularVelocity = -rotateSpeed;
-            }
-            else
-            {
-                rb.angularVelocity = rotateSpeed;
-            }
-
-        }
-    }
-    float Mod(float input, float modulus)
-    {
-        float result = input % modulus;
-        if (result < 0)
-            result += modulus;
-        return result;
+        rotatingObject.transform.rotation = Quaternion.RotateTowards(rotatingObject.transform.rotation, rotation, rotateSpeed * Time.deltaTime);
     }
 }
