@@ -259,12 +259,11 @@ MonoBehaviour:
   damage: 1
   existTime: 100
   health: 10
-  shootDelay: 0.25
+  shootDelay: 0.4
   bullet: {fileID: 1894618330518416783, guid: 426f22a5bcbdd5144b327fcd055a7d76, type: 3}
   bulletInstantiationPoint: {fileID: 2111313124046113220}
   rotatingObject: {fileID: 2111313124046113220}
   rotateSpeed: 500
-  rotationRange: 5
   tread: {fileID: 2111313123968772680}
   treadRotation: 0
   moveSpeed: 1.2

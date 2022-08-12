@@ -2,38 +2,41 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerAppearanceHandler : MonoBehaviour
+public class PlayerAppearancehandler : MonoBehaviour
 {
-    private PlayerController playerController;
-    public GameObject damagedBase;
-    public GameObject damagedFront;
+    public GameObject[] damagedParts;
+    private PlayerController controller;
     public float damagedTime;
     private float damagedTimer;
     private bool damaged;
 
-    private void Awake()
+    void Awake()
     {
-        playerController = GetComponent<PlayerController>();
+        controller = GetComponent<PlayerController>();
         damagedTimer = damagedTime;
+        damaged = false;
     }
 
-    private void OnEnable()
+    // Start is called before the first frame update
+    void OnEnable()
     {
-        playerController.AppearDamaged += StartDamaged;
+        controller.AppearDamaged += StartDamaged;
     }
 
-    private void OnDisable()
+    void OnDisable()
     {
-        playerController.AppearDamaged -= StartDamaged;
+        controller.AppearDamaged -= StartDamaged;
     }
 
-    private void Update()
+    // Update is called once per frame
+    void FixedUpdate()
     {
         if (damaged)
         {
             damagedTimer -= Time.deltaTime;
             if (damagedTimer <= 0)
             {
+                damagedTimer = damagedTime;
                 StopDamaged();
             }
         }
@@ -41,23 +44,20 @@ public class PlayerAppearanceHandler : MonoBehaviour
 
     void StartDamaged()
     {
-        damagedTimer = damagedTime;
         damaged = true;
-        damagedBase.SetActive(true);
-        damagedFront.SetActive(true);
+        foreach (GameObject damagedPart in damagedParts)
+        {
+            damagedPart.SetActive(true);
+        }
+
     }
 
     void StopDamaged()
     {
-        damagedTimer = damagedTime;
         damaged = false;
-        damagedBase.SetActive(false);
-        damagedFront.SetActive(false);
+        foreach (GameObject damagedPart in damagedParts)
+        {
+            damagedPart.SetActive(false);
+        }
     }
-
-    // PLAYER COLORS
-    // Default:
-    // Base: #05146A --- Front: #062E89
-    // Damaged:
-    // Base: #451449 --- Front: #562E55
 }

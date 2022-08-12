@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class TurretBehavior : ShooterBehavior
 {
-    protected GameObject player;
     public GameObject rotatingObject;
     public float rotateSpeed;
 
@@ -14,7 +13,6 @@ public class TurretBehavior : ShooterBehavior
         base.Awake();
         // initialize variables
         rb = rotatingObject.GetComponent<Rigidbody2D>();
-        player = GameObject.FindWithTag("Player");
         bulletHolder = GameObject.FindGameObjectWithTag("BulletHolder");
 
         // other init stuff

@@ -21,6 +21,16 @@ public class DamagerBehavior : MonoBehaviour
         existTimer = existTime;
     }
 
+    protected virtual void Start()
+    {
+
+    }
+
+    protected virtual void Update()
+    {
+
+    }
+
     protected virtual void FixedUpdate()
     {
         // exist timer
